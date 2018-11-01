@@ -1,0 +1,20 @@
+ManifestFileVersion: 0
+CRC: 314496625
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 73706446655b234a1af133ddbcbbfb6b
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 1b3feb9bc6055cd677abb4cd6f720d90
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+- Class: 687078895
+  Script: {instanceID: 0}
+Assets:
+- Assets/Asset/UI/Common/Images/jiantou2.png
+Dependencies: []

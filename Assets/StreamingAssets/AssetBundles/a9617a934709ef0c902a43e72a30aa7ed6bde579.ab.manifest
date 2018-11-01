@@ -1,0 +1,20 @@
+ManifestFileVersion: 0
+CRC: 2526654987
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: d762302b928d42e276d406ad39761ad7
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 1b3feb9bc6055cd677abb4cd6f720d90
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+- Class: 687078895
+  Script: {instanceID: 0}
+Assets:
+- Assets/Asset/UI/UITest/Images/guangbiao_huangguang.png
+Dependencies: []

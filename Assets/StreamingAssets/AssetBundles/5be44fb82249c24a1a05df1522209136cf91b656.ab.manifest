@@ -1,0 +1,20 @@
+ManifestFileVersion: 0
+CRC: 239901834
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: bfe20cb1aa9f0bee01134f68692d96df
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 1b3feb9bc6055cd677abb4cd6f720d90
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+- Class: 687078895
+  Script: {instanceID: 0}
+Assets:
+- Assets/Asset/UI/Common/Images/jindutiaodikuang_huang.png
+Dependencies: []

@@ -1,0 +1,21 @@
+ManifestFileVersion: 0
+CRC: 1419265661
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 917f94d88f43d8ee9ea85043db58cddb
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 6f165f44e4778b6c9d85e7a145a54cb1
+HashAppended: 0
+ClassTypes:
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+Assets:
+- Assets/New Folder/New Material.mat
+Dependencies:
+- D:/UnityDomo/TestProject1/Assets/StreamingAssets/AssetBundles/e5432a453e7648d822fd4a3bb0cb5b1ac8d29a46.ab

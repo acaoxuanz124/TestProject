@@ -1,0 +1,20 @@
+ManifestFileVersion: 0
+CRC: 972068477
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 9bdca1a6e11127ef59697f3a08a29750
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 1b3feb9bc6055cd677abb4cd6f720d90
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+- Class: 687078895
+  Script: {instanceID: 0}
+Assets:
+- Assets/Asset/UI/Common/Images/jindutiao_lv.png
+Dependencies: []
