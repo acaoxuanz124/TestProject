@@ -80,6 +80,7 @@ public class AssetEditor
             string readLocalPath = filePath.Replace(Tool.AppReadPath,"");
             sb.AppendLine(readLocalPath);
         }
+        sb.Append("files.txt");
         File.WriteAllText(Tool.AppReadPath + "files.txt", sb.ToString(),Encoding.UTF8);
         AssetDatabase.Refresh();
     }

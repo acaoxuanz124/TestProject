@@ -224,7 +224,7 @@ public static class Tool
             text = File.ReadAllText(path, encoding);
         return text;
     }
-    public static void SaveTxt(string text,string path, Encoding encoding)
+    public static void SaveTxt(string text, string path, Encoding encoding)
     {
         File.WriteAllText(path, text, encoding);
     }

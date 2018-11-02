@@ -35,12 +35,13 @@ public static class WWWUtil
 
     public static IEnumerator Load(string url, UnityAction<WWW> doneAction)
     {
-        using (WWW www = new WWW(url))
-        {
-            yield return www;
-            if (doneAction != null)
-                doneAction(www);
-        }
+		WWW www = new WWW (url);
+		yield return www;
+        if (doneAction != null)
+           	doneAction(www);
+		www.Dispose ();
+		
+			
     }
 
 }

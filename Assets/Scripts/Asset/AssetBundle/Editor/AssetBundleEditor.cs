@@ -138,6 +138,15 @@ public class AssetBundleEditor : EditorWindow
         }
         rootAssetBundle.Unload(true);
         Tool.SaveTxt(sb.ToString(), GameConfig.AssetBundleLoadPath + GameConfig.depenFileName, Encoding.UTF8);
+
+        List<string> listDeleteFilePath = new List<string>();
+        listDeleteFilePath.Add(GameConfig.AssetBundleLoadPath + GameConfig.assetBundleDirName);
+        listDeleteFilePath.Add(GameConfig.AssetBundleLoadPath + GameConfig.assetBundleDirName + ".manifest");
+        for (int i = listDeleteFilePath.Count - 1; i >= 0; i--)
+        {
+            string deleteFilePath = listDeleteFilePath[i];
+            Tool.DeleteFile(deleteFilePath);
+        }
         AssetDatabase.Refresh();
     }
     [MenuItem("Asset/AssetBundle/ShowHash")]
