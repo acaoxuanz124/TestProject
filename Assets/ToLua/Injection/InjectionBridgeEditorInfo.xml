@@ -3007,6 +3007,7 @@
     <Method Name="_init" PublishedName="_init" Signature="_init" FullSignature="System.Collections.IEnumerator GameUpdate::_init()" Index="2784" />
     <Method Name="_Update" PublishedName="_Update" Signature="_Update" FullSignature="System.Collections.IEnumerator GameUpdate::_Update()" Index="2786" />
     <Method Name="init" PublishedName="init" Signature="init-UnityAction" FullSignature="System.Void GameUpdate::init(UnityEngine.Events.UnityAction)" Index="2783" />
+    <Method Name="IsExport" PublishedName="IsExport" Signature="IsExport" FullSignature="System.Boolean GameUpdate::IsExport()" Index="3180" />
   </Type>
   <Type Name="GestureMain">
     <Method Name="Awake" PublishedName="Awake" Signature="Awake" FullSignature="System.Void GestureMain::Awake()" Index="186" />

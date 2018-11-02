@@ -6,5 +6,5 @@
 
 Game = {}
 function Game.Start()
-    print("111111111")
+    print("1231232123")
 end

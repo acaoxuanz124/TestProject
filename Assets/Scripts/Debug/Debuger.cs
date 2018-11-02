@@ -172,13 +172,13 @@ public static class Debuger
         switch (logType)
         {
             case LogType.Log:
-                Debug.Log(log + obj);
+                Debug.Log(log);
                 break;
             case LogType.Warning:
-                Debug.LogWarning(log + obj);
+                Debug.LogWarning(log);
                 break;
             case LogType.Error:
-                Debug.LogError(log + obj);
+                Debug.LogError(log);
                 break;
         }
     }

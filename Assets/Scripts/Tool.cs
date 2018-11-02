@@ -110,7 +110,7 @@ public static class Tool
     {
         if (string.IsNullOrEmpty(path))
             return path;
-        return path.Trim().Replace("\\", "/");
+        return path.Trim('﻿').Replace("\\", "/");
     }
     public static List<string> GetDirectoryFiles(string path, string[] fileNotNeedExtensions, bool isHaveDirectory, bool isFindChild, List<string> ListFilePaths = null)
     {

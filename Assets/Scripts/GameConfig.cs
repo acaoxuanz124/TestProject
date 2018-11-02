@@ -4,7 +4,20 @@ using System.Text;
 using UnityEngine;
 
 public class GameConfig{
-    public const string assetBundleDirName = "AssetBundles";
+
+    
+    /// <summary>
+    /// 外部导出文件夹标识
+    /// </summary>
+    public enum ExportFolderStruct : byte
+    {
+        AssetBundles,
+        Lua,
+
+        Count,
+    }
+
+    public const string assetBundleDirName = @"AssetBundles";
     public const string LuaDirName = "Lua";
 
     public const string depenFileName = "dep.txt";

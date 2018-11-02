@@ -64,7 +64,7 @@ public class AssetEditor
                 Tool.CreateDirectory(loadPath);
                 continue;
             }
-            loadPath += ".bytes";
+            //loadPath += ".bytes";
             File.Copy(path, loadPath, true);
         }
         AssetDatabase.Refresh();

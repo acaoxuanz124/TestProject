@@ -3,7 +3,7 @@ CRC: 4147371629
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 103b996d47f7bcbb7111b4818388c1eb
+    Hash: 95e0c9840a2840af3710e5d42c3666bb
   TypeTreeHash:
     serializedVersion: 2
     Hash: 31d6cfe0d16ae931b73c59d7e0c089c0
@@ -12,6 +12,6 @@ ClassTypes: []
 Assets:
 - Assets/Asset/Scenes/testScene1.unity
 Dependencies:
-- D:/UnityDomo/TestProject1/Assets/StreamingAssets/AssetBundles/c319403862c3455e37718af555331addfad3cb5c.ab
-- D:/UnityDomo/TestProject1/Assets/StreamingAssets/AssetBundles/fb703c575085bf4f8fac2196ee9d0046a0b51965.ab
-- D:/UnityDomo/TestProject1/Assets/StreamingAssets/AssetBundles/08fcd6278e3d39d7cd100218510aa0bf723d8325.ab
+- D:/UnityProjects/TestProject/Assets/StreamingAssets/AssetBundles/c319403862c3455e37718af555331addfad3cb5c.ab
+- D:/UnityProjects/TestProject/Assets/StreamingAssets/AssetBundles/fb703c575085bf4f8fac2196ee9d0046a0b51965.ab
+- D:/UnityProjects/TestProject/Assets/StreamingAssets/AssetBundles/08fcd6278e3d39d7cd100218510aa0bf723d8325.ab

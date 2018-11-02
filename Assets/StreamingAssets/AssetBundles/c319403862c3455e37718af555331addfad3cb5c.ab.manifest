@@ -3,7 +3,7 @@ CRC: 2088475272
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 12d04fb78d0b2a31427f95f42f604a62
+    Hash: 376b2701d28511154664bd75103152ea
   TypeTreeHash:
     serializedVersion: 2
     Hash: f49f05f36a566d50434f7d9f3fb347da
@@ -26,4 +26,4 @@ ClassTypes:
 Assets:
 - Assets/Asset/Prefabs/Cube.prefab
 Dependencies:
-- D:/UnityDomo/TestProject1/Assets/StreamingAssets/AssetBundles/fb703c575085bf4f8fac2196ee9d0046a0b51965.ab
+- D:/UnityProjects/TestProject/Assets/StreamingAssets/AssetBundles/fb703c575085bf4f8fac2196ee9d0046a0b51965.ab

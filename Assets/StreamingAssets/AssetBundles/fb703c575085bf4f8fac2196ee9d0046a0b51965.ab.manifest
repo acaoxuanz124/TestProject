@@ -3,7 +3,7 @@ CRC: 1419265661
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 917f94d88f43d8ee9ea85043db58cddb
+    Hash: 3d5a8f67a89447a378a5167a9d569ce1
   TypeTreeHash:
     serializedVersion: 2
     Hash: 6f165f44e4778b6c9d85e7a145a54cb1
@@ -18,4 +18,4 @@ ClassTypes:
 Assets:
 - Assets/New Folder/New Material.mat
 Dependencies:
-- D:/UnityDomo/TestProject1/Assets/StreamingAssets/AssetBundles/e5432a453e7648d822fd4a3bb0cb5b1ac8d29a46.ab
+- D:/UnityProjects/TestProject/Assets/StreamingAssets/AssetBundles/e5432a453e7648d822fd4a3bb0cb5b1ac8d29a46.ab
