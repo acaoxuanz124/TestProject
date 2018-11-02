@@ -16,11 +16,14 @@ public class Game : MonoBehaviour
     {
         instance = this;
         DontDestroyOnLoad(gameObject);
-         FairyGUI.Stage stage = FairyGUI.Stage.inst;
         Debuger.Init();
     }
     // Use this for initialization
     void Start()
+    {
+        GameUpdate.init(UpdateOver);
+    }
+    void UpdateOver()
     {
         Manager.InitDone.AddListener(InitDone);
         Manager.Init();
@@ -33,12 +36,7 @@ public class Game : MonoBehaviour
 
         assetManager.LoadAsset("Prefabs/Cube.prefab",delegate(AssetLoader assetLoader) {
             Instantiate(assetLoader.mainAsset);
-
-
-
         });
-
-
     }
     // Update is called once per frame
     void Update()

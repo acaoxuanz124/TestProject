@@ -47,7 +47,7 @@ public static class Tool
                 int i = Application.dataPath.LastIndexOf('/');
                 return Application.dataPath.Substring(0, i + 1) + "/";
             }
-            return StartPath(Directory.GetCurrentDirectory()) + "/";
+            return StartPath(Directory.GetCurrentDirectory()) + "/persistentDataPath/";
         }
     }
     /// <summary>

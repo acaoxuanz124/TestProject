@@ -73,7 +73,7 @@ public class AssetEditor
     static void GenerateFiles()
     {
         StringBuilder sb = new StringBuilder();
-        List<string> ListFilePath =  Tool.GetDirectoryFiles(Tool.AppReadPath, new string[] { ".meta", ".manifest" }, true, true);
+        List<string> ListFilePath =  Tool.GetDirectoryFiles(Tool.AppReadPath, new string[] { ".meta", ".manifest",".txt" }, true, true);
         for (int i = 0; i < ListFilePath.Count; i++)
         {
             string filePath = ListFilePath[i];
