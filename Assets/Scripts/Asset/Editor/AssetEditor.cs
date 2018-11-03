@@ -5,9 +5,13 @@ using UnityEditor;
 using System.IO;
 using System.Text;
 
-public class AssetEditor
-{
 
+
+
+
+
+public class AssetEditor : EditorWindow
+{
     private const string ReadTypeEditorPath = "Asset/ReadType/Editor";
     private const string ReadTypeAssetBundlePath = "Asset/ReadType/AssetBundle";
 
@@ -16,6 +20,21 @@ public class AssetEditor
         get
         {
             return PlayerPrefs.GetInt(AssetManager.ReadTypeKey, (byte)AssetReadType.Editor);
+        }
+    }
+    static string ShowVersion
+    {
+        get
+        {
+            return PlayerPrefs.GetString(AssetManager.ShowVersionKey, "1.0.0");
+        }
+    }
+
+    static int Version
+    {
+        get
+        {
+            return PlayerPrefs.GetInt(AssetManager.VersionKey, 0);
         }
     }
     [MenuItem(ReadTypeEditorPath)]
@@ -40,9 +59,63 @@ public class AssetEditor
         Menu.SetChecked(ReadTypeAssetBundlePath, ReadType == (int)AssetReadType.AssetBundle);
         return true;
     }
-    [MenuItem("Asset/Export Lua to LoadPath")]
-    public static void ExportLuaLoadPath()
+
+    [MenuItem("Asset/AssetEditor")]
+    private static void OpenAssetEditor()
     {
+        EditorWindow.GetWindow<AssetEditor>();
+    }
+    void OnGUI()
+    {
+        GUILayout.BeginVertical();
+        {
+            GUILayout.BeginHorizontal();
+            {
+                GUILayout.Label("ShowVersion:");
+                string showVersion = GUILayout.TextField(ShowVersion);
+                if (showVersion != ShowVersion)
+                {
+                    PlayerPrefs.SetString(AssetManager.ShowVersionKey, showVersion);
+                }
+            }
+            GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+            {
+                GUILayout.Label("Version:");
+                string versionStr = GUILayout.TextField(Version.ToString());
+                long version = Tool.InputNum(versionStr);
+                if (version != Version)
+                {
+                    PlayerPrefs.SetInt(AssetManager.VersionKey, (int)version);
+                }
+            }
+            GUILayout.EndHorizontal();
+            if (GUILayout.Button("Build"))
+            {
+                BuildAsset();
+            }
+        }
+        GUILayout.EndVertical();
+    }
+
+    static void BuildAsset()
+    {
+        EditorUtility.DisplayProgressBar("BuildAssetBundles", "BuildAssetBundles...", 0);
+        AssetBundleEditor.BuildAssetBundles();
+        EditorUtility.DisplayProgressBar("ExportLuaLoadPath", "ExportLuaLoadPath...", 33);
+        ExportLuaLoadPath();
+        EditorUtility.DisplayProgressBar("GenerateFiles", "GenerateFiles...", 66);
+        GenerateFiles();
+        EditorUtility.DisplayProgressBar("Done", "Done...", 100);
+        EditorUtility.ClearProgressBar();
+    }
+
+
+    [MenuItem("Asset/Export Lua to LoadPath")]
+    private static void ExportLuaLoadPath()
+    {
+        ToLuaMenu.CopyLuaFilesToRes();
+
         Tool.CreateDirectory(GameConfig.LuaLoadPath);
         List<string> listLuaFilePath = Tool.GetDirectoryFiles(LuaConst.luaDir, new string[] { ".meta" }, true, true);
         listLuaFilePath.AddRange(Tool.GetDirectoryFiles(LuaConst.toluaDir, new string[] { ".meta" }, true, true));
@@ -67,21 +140,72 @@ public class AssetEditor
             //loadPath += ".bytes";
             File.Copy(path, loadPath, true);
         }
+
         AssetDatabase.Refresh();
     }
     [MenuItem("Asset/GenerateFiles")]
     static void GenerateFiles()
     {
-        StringBuilder sb = new StringBuilder();
-        List<string> ListFilePath =  Tool.GetDirectoryFiles(Tool.AppReadPath, new string[] { ".meta", ".manifest",".txt" }, true, true);
+        List<string> ListFilePath = Tool.GetDirectoryFiles(Tool.AppReadPath, new string[] { ".meta", ".manifest", ".txt" }, true, true);
         for (int i = 0; i < ListFilePath.Count; i++)
-        {
-            string filePath = ListFilePath[i];
-            string readLocalPath = filePath.Replace(Tool.AppReadPath,"");
-            sb.AppendLine(readLocalPath);
-        }
-        sb.Append("files.txt");
-        File.WriteAllText(Tool.AppReadPath + "files.txt", sb.ToString(),Encoding.UTF8);
+            ListFilePath[i] = ListFilePath[i].Replace(Tool.AppReadPath, "");
+        string jsonStr = JsonUtility.ToJson(new AssetInfo(ShowVersion, Version, ListFilePath));
+        File.WriteAllText(Tool.AppReadPath + "files.txt", jsonStr, Encoding.UTF8);
         AssetDatabase.Refresh();
+    }
+    [MenuItem("Asset/CopyAssetToServer")]
+    public static void CopyAssetToServer()
+    {
+        Tool.CreateDirectory(EditorConfig.GameAssetLocalPath);
+
+        string curMaxVersionPath = EditorConfig.GameAssetLocalPath + "curMaxVersion.txt";
+
+        int lastMaxVersion = 0;
+        string lastMaxVersionStr = Tool.ReadTxt(curMaxVersionPath, Encoding.UTF8);
+        if (!string.IsNullOrEmpty(lastMaxVersionStr))
+            lastMaxVersion = int.Parse(lastMaxVersionStr);
+
+        if (lastMaxVersion > Version)
+        {
+            EditorUtility.DisplayDialog("版本错误", "当前最新版本大于本次所提交的版本","确认");
+            return;
+        }
+        string assetInfoStr = Tool.ReadTxt(Tool.AppReadPath + "files.txt", Encoding.UTF8);
+        AssetInfo assetInfo = JsonUtility.FromJson<AssetInfo>(assetInfoStr);
+
+        string curVersionPath = EditorConfig.GameAssetLocalPath + assetInfo.version + "/";
+
+        Tool.SaveTxt(assetInfo.version.ToString(), curMaxVersionPath, Encoding.UTF8);
+
+        Tool.DeleteDirectory(curVersionPath, true);
+
+        Tool.CreateDirectory(curVersionPath);
+
+        for (int i = 0; i < assetInfo.listFilePath.Count; i++)
+        {
+            string localFilePath = assetInfo.listFilePath[i];
+
+            string filePath = Tool.AppReadPath + localFilePath;
+
+            string copyFilePath = curVersionPath + localFilePath;
+
+            if (string.IsNullOrEmpty(Path.GetExtension(copyFilePath)))
+            {
+                Tool.CreateDirectory(copyFilePath);
+            }
+            else
+            {
+                File.Copy(filePath, copyFilePath,true);
+            }
+        }
+
+
+
+
+
+        
+
+
+
     }
 }

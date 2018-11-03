@@ -80,7 +80,7 @@ public class AssetBundleEditor : EditorWindow
 
 
     [MenuItem("Asset/AssetBundle/BuildAssetBundle")]
-    static void BuildAssetBundles()
+    public static void BuildAssetBundles()
     {
         Dictionary<string, string> dicFileHashPath = new Dictionary<string, string>();
         List<string> listFileFullPath = Tool.GetDirectoryFiles(GameConfig.AssetFullPath, new string[] { ".meta", ".asset" }, false, true);

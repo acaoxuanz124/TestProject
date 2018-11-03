@@ -3,21 +3,19 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-public class GameConfig{
+public class GameConfig
+{
 
-    
-    /// <summary>
-    /// 外部导出文件夹标识
-    /// </summary>
-    public enum ExportFolderStruct : byte
-    {
-        AssetBundles,
-        Lua,
+    #region GameAsset
 
-        Count,
-    }
 
+    public const string GameAssetServerIp = "http://192.168.1.108/";
+
+    #endregion
+
+    #region AssetConfig
     public const string assetBundleDirName = @"AssetBundles";
+
     public const string LuaDirName = "Lua";
 
     public const string depenFileName = "dep.txt";
@@ -31,8 +29,9 @@ public class GameConfig{
 
     public const string AssetBundleConfigPath = AssetsConfigPath + "AssetBundle";
 
+    public const string AssetConfigPath = AssetsConfigPath + "Asset";
+
     public static readonly Encoding depenFileEncoding = Encoding.UTF8;
-    
 
     public static string AssetFullPath
     {
@@ -83,4 +82,5 @@ public class GameConfig{
             return AssetPath + "Scenes/";
         }
     }
+    #endregion
 }

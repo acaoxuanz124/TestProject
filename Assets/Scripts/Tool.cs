@@ -220,8 +220,12 @@ public static class Tool
     public static string ReadTxt(string path, Encoding encoding)
     {
         string text = "";
+        if (encoding == null)
+            encoding = Encoding.UTF8;
+        
         if (IsFileExists(path))
             text = File.ReadAllText(path, encoding);
+        text = text.Trim();
         return text;
     }
     public static void SaveTxt(string text, string path, Encoding encoding)
@@ -237,7 +241,7 @@ public static class Tool
     }
     public static long InputNum(string text)
     {
-        long num = -1;
+        long num = 0;
         text = Regex.Replace(text, "[^0-9]", "");
         if (string.IsNullOrEmpty(text))
             return num;

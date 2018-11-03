@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEditor;
 using System.IO;
 using System.ComponentModel;
+using UnityEngine.Events;
 
 public class ToolEditor
 {
@@ -31,7 +32,7 @@ public class ToolEditor
     }
     public static string OpenFilePanelLocal(string title, string defaultAssetsPath, string extension, bool isToAssetPath = false)
     {
-        return OpenFilePanelFull(title, GameConfig.AssetsFullPath +  defaultAssetsPath, extension, isToAssetPath);
+        return OpenFilePanelFull(title, GameConfig.AssetsFullPath + defaultAssetsPath, extension, isToAssetPath);
     }
     public static string OpenFilePanelFull(string title, string defaultFullPath, string extension, bool isToAssetPath = false)
     {
@@ -51,5 +52,30 @@ public class ToolEditor
         if (isToAssetPath)
             filePath = Tool.ToAssetsPath(filePath);
         return filePath;
+    }
+
+    public static void CreateFile(string assetsPath, string defaultName, Texture2D texture, UnityAction<string> doneCreate)
+    {
+        Tool.CreateDirectory(GameConfig.AssetsFullPath + assetsPath);
+
+        UnityEngine.Object obj = AssetDatabase.LoadAssetAtPath(GameConfig.AssetsPath + assetsPath, typeof(UnityEngine.Object));
+
+        Selection.activeObject = obj;
+
+        EditAsset editAsset = ScriptableObject.CreateInstance<EditAsset>();
+
+        editAsset.selectDoneEvent.AddListener(doneCreate);
+
+        ProjectWindowUtil.StartNameEditingIfProjectWindowExists(0, editAsset, defaultName, Texture2D.whiteTexture, null);
+    }
+    public static void CreateScriptableObject<T>(string assetsPath, string defaultName, Texture2D texture)
+        where T : ScriptableObject
+    {
+        CreateFile(assetsPath, defaultName + ".asset", texture, delegate (string path)
+           {
+                T stObject = ScriptableObject.CreateInstance<T>();
+               AssetDatabase.CreateAsset(stObject, path);
+               AssetDatabase.ImportAsset(path);
+           });
     }
 }

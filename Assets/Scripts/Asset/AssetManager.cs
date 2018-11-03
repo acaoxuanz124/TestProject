@@ -10,6 +10,8 @@ public enum AssetReadType : byte
 public class AssetManager : BaseManager
 {
     public const string ReadTypeKey = "Asset.ReadType";
+    public const string ShowVersionKey = "Asset.ShowVersion";
+    public const string VersionKey = "Asset.Version";
 
     public static AssetReadType ReadType
     {

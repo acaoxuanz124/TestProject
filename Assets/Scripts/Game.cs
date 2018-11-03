@@ -21,7 +21,7 @@ public class Game : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        GameUpdate.init(UpdateOver);
+        GameAsset.init(UpdateOver);
     }
     void UpdateOver()
     {
