@@ -12,6 +12,7 @@ public class Game : MonoBehaviour
     }
     GameSceneManager gameSceneManager;
     AssetManager assetManager;
+    LuaManager luaManager;
     private void Awake()
     {
         instance = this;
@@ -21,7 +22,8 @@ public class Game : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        GameAsset.init(UpdateOver);
+        GameUpdate.init(UpdateOver);
+        
     }
     void UpdateOver()
     {
@@ -33,10 +35,10 @@ public class Game : MonoBehaviour
         Debuger.Log("InitDone");
         gameSceneManager = Manager.GetManager<GameSceneManager>();
         assetManager = Manager.GetManager<AssetManager>();
-
-        assetManager.LoadAsset("Prefabs/Cube.prefab",delegate(AssetLoader assetLoader) {
-            Instantiate(assetLoader.mainAsset);
-        });
+        luaManager = Manager.GetManager<LuaManager>();
+       
+        luaManager.DoFile("Game");
+        luaManager.Call("Game.Start");
     }
     // Update is called once per frame
     void Update()
@@ -50,20 +52,20 @@ public class Game : MonoBehaviour
     private void OnGUI()
     {
         GameEvent.OnGUI.Invoke();
-        if (GUI.Button(new Rect(300, 300, 200, 100), "testScene1"))
-        {
-            gameSceneManager.LoadScene("testScene1", delegate ()
-             {
-                 this.Log("testScene1 Done");
-             });
-        }
-        if (GUI.Button(new Rect(600, 300, 200, 100), "testScene2"))
-        {
-            gameSceneManager.LoadScene("testScene2", delegate ()
-            {
-                this.Log("testScene2 Done");
-            });
-        }
+        //if (GUI.Button(new Rect(300, 300, 200, 100), "testScene1"))
+        //{
+        //    gameSceneManager.LoadScene("testScene1", delegate ()
+        //     {
+        //         this.Log("testScene1 Done");
+        //     });
+        //}
+        //if (GUI.Button(new Rect(600, 300, 200, 100), "testScene2"))
+        //{
+        //    gameSceneManager.LoadScene("testScene2", delegate ()
+        //    {
+        //        this.Log("testScene2 Done");
+        //    });
+        //}
     }
     private void OnDestroy()
     {

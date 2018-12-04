@@ -80,11 +80,6 @@ namespace FairyGUI
 			return false;
 		}
 
-		virtual public bool HasCharacter(char ch)
-		{
-			return false;
-		}
-
 		public BaseFont()
 		{
 		}

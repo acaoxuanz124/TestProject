@@ -1,10 +1,12 @@
+require("Define")
+require("function")
 
-
-
-
+require("Manager.UIManager")
+require("UIDefine")
 
 
 Game = {}
 function Game.Start()
-    print("1231232123")
+    UIManager.init()
+    UIManager.ShowPanel(UIPanelTypes.Test)
 end

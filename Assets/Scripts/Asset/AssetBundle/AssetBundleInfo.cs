@@ -8,5 +8,20 @@ public class AssetBundleInfo
     public string assetBundleName;
     public string[] depenAssetBundleNames;
 
+    public bool IsHaveDepen
+    {
+        get
+        {
+            return DepenCount > 0;
+        }
+    }
+    public int DepenCount
+    {
+        get
+        {
+            return depenAssetBundleNames.Length;
+        }
+    }
+
 
 }

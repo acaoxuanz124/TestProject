@@ -46,8 +46,6 @@ namespace FairyGUIEditor
 				EditorPrefs.SetBool("itemsFoldOut", itemsFoldout);
 			EditorGUILayout.EndHorizontal();
 
-			bool modified = false;
-
 			if (itemsFoldout)
 			{
 				Undo.RecordObject(config, "Items");
@@ -127,15 +125,8 @@ namespace FairyGUIEditor
 						case UIConfig.ConfigKey.DefaultScrollTouchEffect:
 						case UIConfig.ConfigKey.RenderingTextBrighterOnDesktop:
 						case UIConfig.ConfigKey.AllowSoftnessOnTopOrLeftSide:
-						case UIConfig.ConfigKey.DepthSupportForPaintingMode:
+						case UIConfig.ConfigKey.RightToLeftText:
 							value.b = EditorGUILayout.Toggle(value.b);
-							break;
-
-						case UIConfig.ConfigKey.EnhancedTextOutlineEffect:
-							EditorGUI.BeginChangeCheck();
-							value.b = EditorGUILayout.Toggle(value.b);
-							if (EditorGUI.EndChangeCheck())
-								modified = true;
 							break;
 
 						case UIConfig.ConfigKey.ButtonSoundVolumeScale:
@@ -147,14 +138,8 @@ namespace FairyGUIEditor
 							value.c = EditorGUILayout.ColorField(value.c);
 							break;
 					}
-
 					if (GUILayout.Button(new GUIContent("X", "Delete Item"), EditorStyles.miniButtonRight, GUILayout.Width(30)))
-					{
 						config.Items[i].Reset();
-						InitDefaultValue((UIConfig.ConfigKey)i, config.Items[i]);
-						if (i == (int)UIConfig.ConfigKey.EnhancedTextOutlineEffect || i == (int)UIConfig.ConfigKey.DepthSupportForPaintingMode)
-							modified = true;
-					}
 					EditorGUILayout.EndHorizontal();
 				}
 			}
@@ -225,13 +210,13 @@ namespace FairyGUIEditor
 			else
 				errorState = 0;
 
-			if (serializedObject.ApplyModifiedProperties() || modified)
+			if (serializedObject.ApplyModifiedProperties())
 				(target as UIConfig).ApplyModifiedProperties();
 		}
 
 		void InitDefaultValue(UIConfig.ConfigKey key, UIConfig.ConfigValue value)
 		{
-			switch (key)
+			switch ((UIConfig.ConfigKey)key)
 			{
 				case UIConfig.ConfigKey.ButtonSoundVolumeScale:
 					value.f = 1;
@@ -282,11 +267,7 @@ namespace FairyGUIEditor
 					value.c = new Color32(255, 223, 141, 128);
 					break;
 
-				case UIConfig.ConfigKey.EnhancedTextOutlineEffect:
-					value.b = true;
-					break;
-
-				case UIConfig.ConfigKey.DepthSupportForPaintingMode:
+				case UIConfig.ConfigKey.RightToLeftText:
 					value.b = false;
 					break;
 			}

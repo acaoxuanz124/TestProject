@@ -39,11 +39,11 @@
 					break;
 
 				case TweenPropType.Y:
-					g.y = value.x;
+					g.y = value.y;
 					break;
 
 				case TweenPropType.Z:
-					g.z = value.x;
+					g.z = value.z;
 					break;
 
 				case TweenPropType.XY:
@@ -59,7 +59,7 @@
 					break;
 
 				case TweenPropType.Height:
-					g.height = value.x;
+					g.height = value.y;
 					break;
 
 				case TweenPropType.Size:
@@ -71,7 +71,7 @@
 					break;
 
 				case TweenPropType.ScaleY:
-					g.scaleY = value.x;
+					g.scaleY = value.y;
 					break;
 
 				case TweenPropType.Scale:

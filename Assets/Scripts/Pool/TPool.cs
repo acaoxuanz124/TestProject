@@ -11,7 +11,6 @@ public static class TPool<T> where T : ITobj, new()
     }
     public static void Return(T obj)
     {
-
         objectPool.Return(obj);
     }
 

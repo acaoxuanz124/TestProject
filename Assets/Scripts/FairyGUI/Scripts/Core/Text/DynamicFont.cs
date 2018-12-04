@@ -260,11 +260,6 @@ namespace FairyGUI
 				return false;
 		}
 
-		override public bool HasCharacter(char ch)
-		{
-			return _font.HasCharacter(ch);
-		}
-
 #if (UNITY_5 || UNITY_5_3_OR_NEWER || UNITY_4_7)
 		void textureRebuildCallback(Font targetFont)
 		{

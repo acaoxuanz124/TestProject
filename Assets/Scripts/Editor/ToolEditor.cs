@@ -32,7 +32,7 @@ public class ToolEditor
     }
     public static string OpenFilePanelLocal(string title, string defaultAssetsPath, string extension, bool isToAssetPath = false)
     {
-        return OpenFilePanelFull(title, GameConfig.AssetsFullPath + defaultAssetsPath, extension, isToAssetPath);
+        return OpenFilePanelFull(title, GameConfig.Asset.AssetsFullPath + defaultAssetsPath, extension, isToAssetPath);
     }
     public static string OpenFilePanelFull(string title, string defaultFullPath, string extension, bool isToAssetPath = false)
     {
@@ -44,7 +44,7 @@ public class ToolEditor
 
     public static string OpenFolderPanelLocal(string title, string defaultAssetsPath, string defaultName, bool isToAssetPath = false)
     {
-        return OpenFolderPanelFull(title, GameConfig.AssetsFullPath + defaultAssetsPath, defaultName, isToAssetPath);
+        return OpenFolderPanelFull(title, GameConfig.Asset.AssetsFullPath + defaultAssetsPath, defaultName, isToAssetPath);
     }
     public static string OpenFolderPanelFull(string title, string defaultFullPath, string defaultName, bool isToAssetPath = false)
     {
@@ -56,9 +56,9 @@ public class ToolEditor
 
     public static void CreateFile(string assetsPath, string defaultName, Texture2D texture, UnityAction<string> doneCreate)
     {
-        Tool.CreateDirectory(GameConfig.AssetsFullPath + assetsPath);
+        Tool.CreateDirectory(GameConfig.Asset.AssetsFullPath + assetsPath);
 
-        UnityEngine.Object obj = AssetDatabase.LoadAssetAtPath(GameConfig.AssetsPath + assetsPath, typeof(UnityEngine.Object));
+        UnityEngine.Object obj = AssetDatabase.LoadAssetAtPath(GameConfig.Asset.AssetsPath + assetsPath, typeof(UnityEngine.Object));
 
         Selection.activeObject = obj;
 

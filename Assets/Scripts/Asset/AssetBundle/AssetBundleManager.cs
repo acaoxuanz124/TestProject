@@ -44,7 +44,7 @@ public class AssetBundleManager : BaseManager
     private void InitAssetBundleInfo()
     {
 
-        assetBundleInfoStringReader = new AssetBundleInfoStringReader(GetReadPath(GameConfig.depenFileName), GameConfig.depenFileEncoding);
+        assetBundleInfoStringReader = new AssetBundleInfoStringReader(GetReadPath(GameConfig.Asset.depenFileName), GameConfig.Asset.depenFileEncoding);
         assetBundleInfoStringReader.Reader(_InitAssetBundleInfo);
     }
 
@@ -89,7 +89,7 @@ public class AssetBundleManager : BaseManager
         return assetBundleInfo;
     }
 
-    public void LoadAssetBundle(string path, UnityAction<AssetBundleLoader> doneAction = null, UnityAction<float> progressAction = null)
+    public void LoadAssetBundleAsync(string path, UnityAction<AssetBundleLoader> doneAction = null, UnityAction<float> progressAction = null)
     {
         string assetBundleName = HashUtil.Get(path) + ".ab";
         AssetBundleLoader assetBundleLoader = GetAssetBundleLoader(assetBundleName);
@@ -149,9 +149,52 @@ public class AssetBundleManager : BaseManager
             _listWaitAssetBundleLoader.Add(assetBundleLoader);
         }
     }
+    public AssetBundleLoader LoadAssetBundle(string path)
+    {
+        string assetBundleName = HashUtil.Get(path) + ".ab";
+        AssetBundleLoader assetBundleLoader = GetAssetBundleLoader(assetBundleName);
+        if (assetBundleLoader != null)
+        {
+            if (assetBundleLoader.isDone)
+                return assetBundleLoader;
+            return null;
+        }
+        AssetBundleInfo assetBundleInfo = GetAssetBundleInfo(assetBundleName);
+        if (assetBundleInfo == null)
+        {
+            Debuger.LogError("assetBundleName: {0} is null", assetBundleName);
+            return null;
+        }
+
+        assetBundleLoader = TPool<AssetBundleLoader>.Get();
+        assetBundleLoader.SetAssetBundleLoader(assetBundleName, GetReadPath(assetBundleName), LoadAssetBundleDone);
+        if (assetBundleInfo.IsHaveDepen)
+        {
+            int curDepenDoneCount = 0;
+            for (int i = 0; i < assetBundleInfo.DepenCount; i++)
+            {
+                string depenAssetBundleName = assetBundleInfo.depenAssetBundleNames[i];
+                AssetBundleLoader depenAssetBundleLoader = GetAssetBundleLoader(depenAssetBundleName);
+                if (depenAssetBundleLoader == null)
+                {
+                    depenAssetBundleLoader = TPool<AssetBundleLoader>.Get();
+                    depenAssetBundleLoader.SetAssetBundleLoader(depenAssetBundleName, GetReadPath(depenAssetBundleName), LoadAssetBundleDone);
+                    depenAssetBundleLoader.LoadAsync();
+                }
+                else if (depenAssetBundleLoader.isDone)
+                {
+                    curDepenDoneCount += 1;
+                }
+            }
+            if (curDepenDoneCount < assetBundleInfo.depenAssetBundleNames.Length)
+                return null;
+        }
+        assetBundleLoader.Load();
+        return assetBundleLoader;
+    }
     private static string GetReadPath(string name)
     {
-        return Tool.GetReadPath(GameConfig.assetBundleDirName + "/" + name);
+        return Tool.GetReadPath(GameConfig.Asset.assetBundleDirName + "/" + name);
     }
     public void UnloadAssetBundle(string path)
     {
@@ -200,7 +243,7 @@ public class AssetBundleManager : BaseManager
                     _listWaitDepenAssetBundleLoader.RemoveAt(i);
                     _listIngAssetBundleLoader.Add(assetBundleLoader);
                     --loadNum;
-                    assetBundleLoader.Load();
+                    assetBundleLoader.LoadAsync();
                 }
             }
             for (int i = 0; i < loadNum; i++)
@@ -210,7 +253,7 @@ public class AssetBundleManager : BaseManager
                 AssetBundleLoader assetBundleLoader = _listWaitAssetBundleLoader[0];
                 _listWaitAssetBundleLoader.RemoveAt(0);
                 _listIngAssetBundleLoader.Add(assetBundleLoader);
-                assetBundleLoader.Load();
+                assetBundleLoader.LoadAsync();
             }
 
         }
@@ -227,14 +270,14 @@ public class AssetBundleManager : BaseManager
         if (_dicAssetBundleInfo != null)
             _dicAssetBundleInfo.Clear();
 
-        if (_listIngAssetBundleLoader!=null)
+        if (_listIngAssetBundleLoader != null)
             _listIngAssetBundleLoader.Clear();
 
         if (_listWaitAssetBundleLoader != null)
-            _listIngAssetBundleLoader.Clear();
+            _listWaitAssetBundleLoader.Clear();
 
         if (_listWaitDepenAssetBundleLoader != null)
-            _listIngAssetBundleLoader.Clear();
+            _listWaitDepenAssetBundleLoader.Clear();
     }
 
 }

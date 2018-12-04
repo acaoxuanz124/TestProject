@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System;
 using System.Collections.Generic;
 using FairyGUI.Utils;
 
@@ -47,23 +46,17 @@ namespace FairyGUI
 		/// <param name="go">包装对象。</param>
 		public GoWrapper(GameObject go) : this()
 		{
-			SetWrapTarget(go, false);
+			setWrapTarget(go, false);
 		}
 
 		/// <summary>
 		/// 设置包装对象。注意如果原来有包装对象，设置新的包装对象后，原来的包装对象只会被删除引用，但不会被销毁。
-		/// 对象包含的所有材质不会被复制，如果材质已经是公用的，这可能影响到其他对象。如果希望自动复制，改为使用SetWrapTarget(target, true)设置。
+		/// 对象包含的所有材质不会被复制，如果材质已经是公用的，这可能影响到其他对象。如果希望自动复制，改为使用setWrapTarget(target, true)设置。
 		/// </summary>
 		public GameObject wrapTarget
 		{
 			get { return _wrapTarget; }
-			set { SetWrapTarget(value, false); }
-		}
-
-		[Obsolete("setWrapTarget is deprecated. Use SetWrapTarget instead.")]
-		public void setWrapTarget(GameObject target, bool cloneMaterial)
-		{
-			SetWrapTarget(target, cloneMaterial);
+			set { setWrapTarget(value, false); }
 		}
 
 		/// <summary>
@@ -71,7 +64,7 @@ namespace FairyGUI
 		/// </summary>
 		/// <param name="target"></param>
 		/// <param name="cloneMaterial">如果true，则复制材质，否则直接使用sharedMaterial。</param>
-		public void SetWrapTarget(GameObject target, bool cloneMaterial)
+		public void setWrapTarget(GameObject target, bool cloneMaterial)
 		{
 			RecoverMaterials();
 
@@ -140,49 +133,41 @@ namespace FairyGUI
 			_wrapTarget.GetComponentsInChildren<Renderer>(true, _renderers);
 
 			int cnt = _renderers.Count;
+			int k;
 			for (int i = 0; i < cnt; i++)
 			{
 				Renderer r = _renderers[i];
 				if (r == null)
 					continue;
 
-				bool shouldSetRenderQueue = (r is SkinnedMeshRenderer) || (r is MeshRenderer);
-
-				Material[] mats = r.sharedMaterials;
-				if (mats == null || mats.Length == 0)
+				Material m = r.sharedMaterial;
+				if (m == null)
 					continue;
 
-				int mcnt = mats.Length;
-				for (int j = 0; j < mcnt; j++)
+				//确保相同的材质不会复制两次
+				k = _materialsBackup.IndexOf(m);
+				if (k == -1) //未备份
 				{
-					Material mat = mats[j];
-
-					//确保相同的材质不会复制两次
-					int k = _materialsBackup.IndexOf(mat);
-					if (k == -1) //未备份
+					_materialsBackup.Add(m);
+					if (_cloneMaterial)
 					{
-						_materialsBackup.Add(mat);
-						if (_cloneMaterial)
-						{
-							mat = new Material(mat);
-							mats[j] = mat;
-							_materials.Add(mat); //保存新创建的材质
-						}
-						else
-							_materials.Add(mat); //直接使用已有材质
+						m = r.material;//复制材质
+						r.sharedMaterial = m;
+						_materials.Add(m); //保存新创建的材质
 					}
-					else if (_cloneMaterial)
-					{
-						mat = _materials[k];
-						mats[j] = mat;
-					}
-
-					if (shouldSetRenderQueue) //Set the object rendering in Transparent Queue as UI objects
-						mat.renderQueue = 3000;
+					else
+						_materials.Add(m); //直接使用已有材质
+				}
+				else if (_cloneMaterial)
+				{
+					r.sharedMaterial = _materials[k];
 				}
 
-				if (_cloneMaterial)
-					r.sharedMaterials = mats;
+				if ((r is SkinnedMeshRenderer) || (r is MeshRenderer))
+				{
+					//Set the object rendering in Transparent Queue as UI objects
+					r.sharedMaterial.renderQueue = 3000;
+				}
 			}
 
 			if (!_cloneMaterial)
@@ -205,27 +190,20 @@ namespace FairyGUI
 				return;
 
 			int cnt = _renderers.Count;
+			int k;
 			for (int i = 0; i < cnt; i++)
 			{
 				Renderer r = _renderers[i];
 				if (r == null)
 					continue;
 
-				Material[] mats = r.sharedMaterials;
-				if (mats == null || mats.Length == 0)
+				Material m = r.sharedMaterial;
+				if (m == null)
 					continue;
 
-				int mcnt = mats.Length;
-				for (int j = 0; j < mcnt; j++)
-				{
-					Material mat = mats[j];
-
-					int k = _materials.IndexOf(mat);
-					if (k != -1)
-						mats[j] = _materialsBackup[k];
-				}
-
-				r.sharedMaterials = mats;
+				k = _materials.IndexOf(m);
+				if (k != -1)
+					r.sharedMaterial = _materialsBackup[k];
 			}
 
 			cnt = _materials.Count;
@@ -288,32 +266,48 @@ namespace FairyGUI
 		{
 			if (supportStencil)
 			{
-				int cnt = _materials.Count;
-				for (int i = 0; i < cnt; i++)
+				bool clearStencil = false;
+				if (context.clipped)
 				{
-					Material mat = _materials[i];
-					if (mat != null)
+					if (context.stencilReferenceValue > 0)
 					{
-						if (context.clipped && context.stencilReferenceValue > 0)
+						int refValue = context.stencilReferenceValue | (context.stencilReferenceValue - 1);
+						int cnt = _materials.Count;
+						for (int i = 0; i < cnt; i++)
 						{
-							int refValue = context.stencilReferenceValue | (context.stencilReferenceValue - 1);
-
-							if (context.clipInfo.reversedMask)
-								mat.SetFloat(ShaderConfig._properyIDs._StencilComp, (int)UnityEngine.Rendering.CompareFunction.NotEqual);
-							else
-								mat.SetFloat(ShaderConfig._properyIDs._StencilComp, (int)UnityEngine.Rendering.CompareFunction.Equal);
-							mat.SetFloat(ShaderConfig._properyIDs._Stencil, refValue);
-							mat.SetFloat(ShaderConfig._properyIDs._StencilOp, (int)UnityEngine.Rendering.StencilOp.Keep);
-							mat.SetFloat(ShaderConfig._properyIDs._StencilReadMask, refValue);
-							mat.SetFloat(ShaderConfig._properyIDs._ColorMask, 15);
+							Material m = _materials[i];
+							if (m != null)
+							{
+								if (context.clipInfo.reversedMask)
+									m.SetInt("_StencilComp", (int)UnityEngine.Rendering.CompareFunction.NotEqual);
+								else
+									m.SetInt("_StencilComp", (int)UnityEngine.Rendering.CompareFunction.Equal);
+								m.SetInt("_Stencil", refValue);
+								m.SetInt("_StencilOp", (int)UnityEngine.Rendering.StencilOp.Keep);
+								m.SetInt("_StencilReadMask", refValue);
+								m.SetInt("_ColorMask", 15);
+							}
 						}
-						else
+					}
+					else
+						clearStencil = true;
+				}
+				else
+					clearStencil = true;
+
+				if (clearStencil)
+				{
+					int cnt = _materials.Count;
+					for (int i = 0; i < cnt; i++)
+					{
+						Material m = _materials[i];
+						if (m != null)
 						{
-							mat.SetFloat(ShaderConfig._properyIDs._StencilComp, (int)UnityEngine.Rendering.CompareFunction.Always);
-							mat.SetFloat(ShaderConfig._properyIDs._Stencil, 0);
-							mat.SetFloat(ShaderConfig._properyIDs._StencilOp, (int)UnityEngine.Rendering.StencilOp.Keep);
-							mat.SetFloat(ShaderConfig._properyIDs._StencilReadMask, 255);
-							mat.SetFloat(ShaderConfig._properyIDs._ColorMask, 15);
+							m.SetInt("_StencilComp", (int)UnityEngine.Rendering.CompareFunction.Always);
+							m.SetInt("_Stencil", 0);
+							m.SetInt("_StencilOp", (int)UnityEngine.Rendering.StencilOp.Keep);
+							m.SetInt("_StencilReadMask", 255);
+							m.SetInt("_ColorMask", 15);
 						}
 					}
 				}

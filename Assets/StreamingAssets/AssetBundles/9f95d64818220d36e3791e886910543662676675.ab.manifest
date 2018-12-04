@@ -1,0 +1,22 @@
+ManifestFileVersion: 0
+CRC: 16254375
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 3f83880b6a9c98b1b668ff545687adf8
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 1b3feb9bc6055cd677abb4cd6f720d90
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+- Class: 687078895
+  Script: {instanceID: 0}
+Assets:
+- Assets/Asset/UI/Prefabs/UITest/Atlas.spriteatlas
+Dependencies:
+- D:/UnityDomo/TestProject1/Assets/StreamingAssets/AssetBundles/14391ca415af4a28c6db91b6a122e73de92a9e59.ab
+- D:/UnityDomo/TestProject1/Assets/StreamingAssets/AssetBundles/e51490e82d2e9d3a3aabe4be73cbda7beb93b35f.ab

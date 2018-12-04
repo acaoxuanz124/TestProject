@@ -46,13 +46,13 @@ public class GameSceneManager : BaseManager
             return;
         }
         curSceneName = sceneName;
-        curSceneAssetPath = GameConfig.AssetScenePath + curSceneName + ".unity";
+        curSceneAssetPath = GameConfig.Asset.AssetScenePath + curSceneName + ".unity";
         this.doneAction = doneAction;
 
 
         if (AssetManager.ReadType == AssetReadType.AssetBundle)
         {
-            assetBundleManager.LoadAssetBundle(curSceneAssetPath, assetBundleLoader => this.Coroutine(_LoadScene()));
+            assetBundleManager.LoadAssetBundleAsync(curSceneAssetPath, assetBundleLoader => this.Coroutine(_LoadScene()));
         }
         else
         {

@@ -5,29 +5,32 @@ function handler(obj,func)
 end
 
 function class(base)
-    local obj={}
-    obj.base=base
-    obj.ctor=function()
+    
+    local obj = {}
+    obj.base = base
+    obj.ctor = function()
 
     end
-    obj.New=function( ... )
-        local NewObj={}
-        NewObj.base=base
-        NewObj.ctor=function()
+    obj.New = function(...)
+        local NewObj = {}
+        NewObj.base = base
+        NewObj.ctor = function()
 
         end
         local callCtor
         callCtor = function(curClassType,...)
-            if curClassType.base~=nil then
+            print(curClassType)
+            if curClassType.base ~= nil then
                 callCtor(curClassType.base,...)
             end
             if curClassType.ctor ~= nil then
                 curClassType.ctor(NewObj,...)
             end
         end
+
         callCtor(NewObj,...)
 
-        setmetatable(NewObj, {__index=obj})
+        setmetatable(NewObj, {__index = obj})
 
         return NewObj
 
@@ -41,7 +44,7 @@ end
 function table.tostring(table)
 
     local tostring=nil
-    tostring=function(table,tab)
+    tostring = function(table,tab)
         if tab==nil then
             tab=0
         end
@@ -74,15 +77,14 @@ function table.tostring(table)
     end
     return tostring(table,1)
 end
-
-
-function Log()
-
+function Log(arg,...)
+    Debuger.Log(arg,...)
 end
 
-function LogError()
-    
+function LogError(arg,...)
+    Debuger.LogError(arg,...)
 end
-function LogWarning()
-    
+
+function LogWarning(arg,...)
+    Debuger.LogWarning(arg,...)
 end

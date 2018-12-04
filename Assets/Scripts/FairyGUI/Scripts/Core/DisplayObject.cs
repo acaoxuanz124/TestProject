@@ -1208,7 +1208,7 @@ namespace FairyGUI
 				direction = this.cachedTransform.InverseTransformDirection(direction);
 				float distOnLine = Vector3.Dot(Vector3.zero - localPoint, Vector3.forward) / Vector3.Dot(direction, Vector3.forward);
 				if (float.IsInfinity(distOnLine))
-					return Vector2.zero;
+					return new Vector2(0, 0);
 
 				localPoint = localPoint + direction * distOnLine;
 			}
@@ -1279,18 +1279,18 @@ namespace FairyGUI
 			}
 			else
 			{
-				Vector4 vec4 = new Vector4(float.MaxValue, float.MaxValue, float.MinValue, float.MinValue);
+				Rect result = Rect.MinMaxRect(float.MaxValue, float.MaxValue, float.MinValue, float.MinValue);
 
-				TransformRectPoint(rect.xMin, rect.yMin, targetSpace, ref vec4);
-				TransformRectPoint(rect.xMax, rect.yMin, targetSpace, ref vec4);
-				TransformRectPoint(rect.xMin, rect.yMax, targetSpace, ref vec4);
-				TransformRectPoint(rect.xMax, rect.yMax, targetSpace, ref vec4);
+				TransformRectPoint(rect.xMin, rect.yMin, targetSpace, ref result);
+				TransformRectPoint(rect.xMax, rect.yMin, targetSpace, ref result);
+				TransformRectPoint(rect.xMin, rect.yMax, targetSpace, ref result);
+				TransformRectPoint(rect.xMax, rect.yMax, targetSpace, ref result);
 
-				return Rect.MinMaxRect(vec4.x, vec4.y, vec4.z, vec4.w);
+				return result;
 			}
 		}
 
-		protected void TransformRectPoint(float px, float py, DisplayObject targetSpace, ref Vector4 vec4)
+		protected void TransformRectPoint(float px, float py, DisplayObject targetSpace, ref Rect rect)
 		{
 			Vector2 v = this.cachedTransform.TransformPoint(px, -py, 0);
 			if (targetSpace != null)
@@ -1298,10 +1298,10 @@ namespace FairyGUI
 				v = targetSpace.cachedTransform.InverseTransformPoint(v);
 				v.y = -v.y;
 			}
-			if (vec4.x > v.x) vec4.x = v.x;
-			if (vec4.z < v.x) vec4.z = v.x;
-			if (vec4.y > v.y) vec4.y = v.y;
-			if (vec4.w < v.y) vec4.w = v.y;
+			if (rect.xMin > v.x) rect.xMin = v.x;
+			if (rect.xMax < v.x) rect.xMax = v.x;
+			if (rect.yMin > v.y) rect.yMin = v.y;
+			if (rect.yMax < v.y) rect.yMax = v.y;
 		}
 
 		/// <summary>

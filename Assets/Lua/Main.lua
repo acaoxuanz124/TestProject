@@ -7,6 +7,7 @@ end
 function OnLevelWasLoaded(level)
 	collectgarbage("collect")
 	Time.timeSinceLevelLoad = 0
+
 end
 
 function OnApplicationQuit()

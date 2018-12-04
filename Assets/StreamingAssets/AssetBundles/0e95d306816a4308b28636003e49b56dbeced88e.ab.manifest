@@ -1,0 +1,16 @@
+ManifestFileVersion: 0
+CRC: 1476363567
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 39e08c7059e5b0064d4c209362ad1457
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: db876066d9c58e1004fa9887524636f6
+HashAppended: 0
+ClassTypes:
+- Class: 213
+  Script: {instanceID: 0}
+Assets:
+- Assets/UIImg/Common/Img/12.png
+Dependencies: []

@@ -83,7 +83,7 @@ public class AssetEditor : EditorWindow
             {
                 GUILayout.Label("Version:");
                 string versionStr = GUILayout.TextField(Version.ToString());
-                long version = Tool.InputNum(versionStr);
+                long version = Tool.StringToInt64(versionStr);
                 if (version != Version)
                 {
                     PlayerPrefs.SetInt(AssetManager.VersionKey, (int)version);
@@ -116,7 +116,7 @@ public class AssetEditor : EditorWindow
     {
         ToLuaMenu.CopyLuaFilesToRes();
 
-        Tool.CreateDirectory(GameConfig.LuaLoadPath);
+        Tool.CreateDirectory(GameConfig.Asset.LuaLoadPath);
         List<string> listLuaFilePath = Tool.GetDirectoryFiles(LuaConst.luaDir, new string[] { ".meta" }, true, true);
         listLuaFilePath.AddRange(Tool.GetDirectoryFiles(LuaConst.toluaDir, new string[] { ".meta" }, true, true));
         for (int i = 0; i < listLuaFilePath.Count; i++)
@@ -131,7 +131,7 @@ public class AssetEditor : EditorWindow
             {
                 luaDirChildPath = path.Replace(LuaConst.toluaDir + "/", "");
             }
-            string loadPath = GameConfig.LuaLoadPath + luaDirChildPath;
+            string loadPath = GameConfig.Asset.LuaLoadPath + luaDirChildPath;
             if (string.IsNullOrEmpty(Path.GetExtension(loadPath)))
             {
                 Tool.CreateDirectory(loadPath);
@@ -149,8 +149,9 @@ public class AssetEditor : EditorWindow
         List<string> ListFilePath = Tool.GetDirectoryFiles(Tool.AppReadPath, new string[] { ".meta", ".manifest", ".txt" }, true, true);
         for (int i = 0; i < ListFilePath.Count; i++)
             ListFilePath[i] = ListFilePath[i].Replace(Tool.AppReadPath, "");
+        ListFilePath.Add(GameConfig.GameUpdate.filesName);
         string jsonStr = JsonUtility.ToJson(new AssetInfo(ShowVersion, Version, ListFilePath));
-        File.WriteAllText(Tool.AppReadPath + "files.txt", jsonStr, Encoding.UTF8);
+        File.WriteAllText(Tool.AppReadPath + GameConfig.GameUpdate.filesName, jsonStr, Encoding.UTF8);
         AssetDatabase.Refresh();
     }
     [MenuItem("Asset/CopyAssetToServer")]
@@ -167,10 +168,10 @@ public class AssetEditor : EditorWindow
 
         if (lastMaxVersion > Version)
         {
-            EditorUtility.DisplayDialog("版本错误", "当前最新版本大于本次所提交的版本","确认");
+            EditorUtility.DisplayDialog("版本错误", "当前最新版本大于本次所提交的版本", "确认");
             return;
         }
-        string assetInfoStr = Tool.ReadTxt(Tool.AppReadPath + "files.txt", Encoding.UTF8);
+        string assetInfoStr = Tool.ReadTxt(Tool.AppReadPath + GameConfig.GameUpdate.filesName, Encoding.UTF8);
         AssetInfo assetInfo = JsonUtility.FromJson<AssetInfo>(assetInfoStr);
 
         string curVersionPath = EditorConfig.GameAssetLocalPath + assetInfo.version + "/";
@@ -195,17 +196,42 @@ public class AssetEditor : EditorWindow
             }
             else
             {
-                File.Copy(filePath, copyFilePath,true);
+                File.Copy(filePath, copyFilePath, true);
             }
         }
+    }
+    /// <summary>
+    /// 生成对比文件
+    /// </summary>
+    /// <param name="lastVer">上一次版本</param>
+    /// <param name="curVer">当前版本</param>
+    private static bool GenerateDiffFiles(int lastVer, int curVer)
+    {
+
+        AssetInfo lastAssetInfo = GetAssetInfo(lastVer);
+
+        AssetInfo curAssetInfo = GetAssetInfo(curVer);
+
+        if (lastAssetInfo == null || curAssetInfo == null)
+            return false;
 
 
 
 
 
-        
 
-
-
+        return true;
+    }
+    static AssetInfo GetAssetInfo(string path)
+    {
+        AssetInfo assetInfo = null;
+        string assetInfoStr = Tool.ReadTxt(path, Encoding.UTF8);
+        if (!string.IsNullOrEmpty(assetInfoStr))
+            assetInfo = JsonUtility.FromJson<AssetInfo>(assetInfoStr);
+        return assetInfo;
+    }
+    static AssetInfo GetAssetInfo(int ver)
+    {
+        return GetAssetInfo(EditorConfig.GameAssetLocalPath + ver + "/files.txt");
     }
 }

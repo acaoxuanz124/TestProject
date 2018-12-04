@@ -8,8 +8,8 @@ public static class AssetBundleUtil {
     [MenuItem("Assets/Create/AssetBundleBuildFolder")]
     public static void CreateAssetBundleBuildFolder()
     {
-        Tool.CreateDirectory(GameConfig.AssetsFullPath + GameConfig.AssetBundleConfigPath);
-        UnityEngine.Object obj = AssetDatabase.LoadAssetAtPath(GameConfig.AssetsPath + GameConfig.AssetBundleConfigPath, typeof(Object));
+        Tool.CreateDirectory(GameConfig.Asset.AssetsFullPath + GameConfig.Asset.AssetBundleConfigPath);
+        UnityEngine.Object obj = AssetDatabase.LoadAssetAtPath(GameConfig.Asset.AssetsPath + GameConfig.Asset.AssetBundleConfigPath, typeof(Object));
 
         EditAsset editAsset = ScriptableObject.CreateInstance<EditAsset>();
         editAsset.selectDoneEvent.AddListener(CreateAssetBundleBuildInfo);

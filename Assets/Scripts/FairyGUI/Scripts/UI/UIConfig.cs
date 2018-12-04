@@ -65,6 +65,8 @@ namespace FairyGUI
 		/// 鼠标滚轮触发一次滚动的距离设定为defaultScrollStep*2
 		/// </summary>
 		public static float defaultScrollStep = 25;
+		[Obsolete("UIConfig.defaultScrollSpeed is deprecated. Use defaultScrollStep instead.")]
+		public static float defaultScrollSpeed = 25;
 
 		/// <summary>
 		/// Deceleration ratio of scrollpane when its in touch dragging.
@@ -73,6 +75,8 @@ namespace FairyGUI
 		/// 这个是全局设置，也可以通过ScrollPane.decelerationRate进行个性设置。
 		/// </summary>
 		public static float defaultScrollDecelerationRate = 0.967f;
+		[Obsolete("UIConfig.defaultTouchScrollSpeedRatio is deprecated. Use defaultScrollDecelerationRate instead.")]
+		public static float defaultTouchScrollSpeedRatio = 1;
 
 		/// <summary>
 		/// Scrollbar display mode. Recommended 'Auto' for mobile and 'Visible' for web.
@@ -159,12 +163,6 @@ namespace FairyGUI
 		/// </summary>
 		public static bool depthSupportForPaintingMode = false;
 
-		/// <summary>
-		/// Indicates whether to draw extra 4 or 8 times to achieve stroke effect for textfield.
-		/// If it is true, that is the 8 times, otherwise it is the 4 times.
-		/// </summary>
-		public static bool enhancedTextOutlineEffect = true;
-
 		public enum ConfigKey
 		{
 			DefaultFont,
@@ -191,8 +189,7 @@ namespace FairyGUI
 			AllowSoftnessOnTopOrLeftSide,
 			InputCaretSize,
 			InputHighlightColor,
-			EnhancedTextOutlineEffect,
-			DepthSupportForPaintingMode,
+			RightToLeftText,
 
 			PleaseSelect = 100
 		}
@@ -341,14 +338,6 @@ namespace FairyGUI
 					case ConfigKey.InputHighlightColor:
 						UIConfig.inputHighlightColor = value.c;
 						break;
-
-					case ConfigKey.DepthSupportForPaintingMode:
-						UIConfig.depthSupportForPaintingMode = value.b;
-						break;
-
-					case ConfigKey.EnhancedTextOutlineEffect:
-						UIConfig.enhancedTextOutlineEffect = value.b;
-						break;
 				}
 			}
 		}
@@ -369,7 +358,7 @@ namespace FairyGUI
 
 		public void ApplyModifiedProperties()
 		{
-			EMRenderSupport.Reload();
+			//nothing yet
 		}
 
 		public delegate NAudioClip SoundLoader(string url);

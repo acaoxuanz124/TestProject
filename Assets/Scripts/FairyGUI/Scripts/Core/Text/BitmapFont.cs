@@ -119,10 +119,5 @@ namespace FairyGUI
 			else
 				return false;
 		}
-
-		override public bool HasCharacter(char ch)
-		{
-			return ch == ' ' || _dict.ContainsKey((int)ch);
-		}
 	}
 }

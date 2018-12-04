@@ -112,9 +112,6 @@ namespace FairyGUI
 			if (_endAt == -1 || _endAt > frameCount - 1)
 				_endAt = frameCount - 1;
 
-			if (_frame < 0 || _frame > frameCount - 1)
-				_frame = frameCount - 1;
-
 			graphics.texture = texture;
 			OnSizeChanged(true, true);
 			InvalidateBatchingState();
@@ -451,8 +448,6 @@ namespace FairyGUI
 				_requireUpdateMesh = false;
 				DrawFrame();
 			}
-			else
-				graphics.ClearMesh();
 		}
 	}
 }

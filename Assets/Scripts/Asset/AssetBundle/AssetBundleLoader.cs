@@ -7,11 +7,23 @@ using System.IO;
 
 public class AssetBundleLoader : IObject, ITobj
 {
-    /// <summary>
-    /// 是否加载完成
-    /// </summary>
-    /// <value>The name of the asset.</value>
-    public bool isDone;
+    private bool _isDone;
+
+    public bool isDone
+    {
+        get
+        {
+            return _isDone;
+        }
+        protected set
+        {
+            if (_isDone)
+                return;
+            _isDone = value;
+            if (_isDone)
+                doneEvent.Invoke(this);
+        }
+    }
     /// <summary>
     /// assetBundle名称
     /// </summary>
@@ -105,11 +117,11 @@ public class AssetBundleLoader : IObject, ITobj
         this.depenCount = depenCount;
         this.curOfDepenNum = curOfDepenNum;
     }
-    public void Load()
+    public void LoadAsync()
     {
-        this.Coroutine(_Load());
+        this.Coroutine(_LoadAsync());
     }
-    private IEnumerator _Load()
+    private IEnumerator _LoadAsync()
     {
         AssetBundleCreateRequest assetBundleAsync = AssetBundle.LoadFromFileAsync(readPath);
         assetBundleAsync.priority = priority;
@@ -120,7 +132,14 @@ public class AssetBundleLoader : IObject, ITobj
         }
         assetBundle = assetBundleAsync.assetBundle;
         isDone = true;
-        doneEvent.Invoke(this);
+        //doneEvent.Invoke(this);
+    }
+    public void Load()
+    {
+        progressEvent.Invoke(0f);
+        assetBundle = AssetBundle.LoadFromFile(readPath);
+        progressEvent.Invoke(1f);
+        isDone = true;
     }
 
     public void Release()
@@ -130,7 +149,6 @@ public class AssetBundleLoader : IObject, ITobj
             assetBundle.Unload(true);
             assetBundle = null;
         }
-
 
     }
     public void AddCurDepenDone(AssetBundleLoader depenAssetBundleLoader)

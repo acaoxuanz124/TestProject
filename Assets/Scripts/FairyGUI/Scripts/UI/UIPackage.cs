@@ -228,7 +228,7 @@ namespace FairyGUI
 			});
 		}
 
-		/// <summary>
+		/// <summary>z
 		/// 使用自定义的加载方式载入一个包。
 		/// </summary>
 		/// <param name="assetPath">包资源路径。</param>
@@ -238,7 +238,6 @@ namespace FairyGUI
 		{
 			if (_packageInstById.ContainsKey(assetPath))
 				return _packageInstById[assetPath];
-
 			DestroyMethod dm;
 			TextAsset asset = (TextAsset)loadFunc(assetPath + "_fui", ".bytes", typeof(TextAsset), out dm);
 			if (asset == null)
@@ -829,7 +828,7 @@ namespace FairyGUI
 				{
 					if (pi.texture != null)
 					{
-						pi.texture.Dispose();
+						pi.texture.Unload();
 						pi.texture = null;
 					}
 				}
@@ -1221,7 +1220,7 @@ namespace FairyGUI
 			font.canTint = buffer.ReadBool();
 			font.resizable = buffer.ReadBool();
 			font.hasChannel = buffer.ReadBool();
-			int fontSize = buffer.ReadInt();
+			font.size = buffer.ReadInt();
 			int xadvance = buffer.ReadInt();
 			int lineHeight = buffer.ReadInt();
 
@@ -1265,28 +1264,7 @@ namespace FairyGUI
 				else if (bg.channel == 3)
 					bg.channel = 1;
 
-				if (ttf)
-				{
-					if (mainSprite.rotated)
-					{
-						bg.uv[0] = new Vector2((float)(by + bg.height + mainSprite.rect.x) * texScaleX,
-							1 - (float)(mainSprite.rect.yMax - bx) * texScaleY);
-						bg.uv[1] = new Vector2(bg.uv[0].x - (float)bg.height * texScaleX, bg.uv[0].y);
-						bg.uv[2] = new Vector2(bg.uv[1].x, bg.uv[0].y + (float)bg.width * texScaleY);
-						bg.uv[3] = new Vector2(bg.uv[0].x, bg.uv[2].y);
-					}
-					else
-					{
-						bg.uv[0] = new Vector2((float)(bx + mainSprite.rect.x) * texScaleX,
-							1 - (float)(by + bg.height + mainSprite.rect.y) * texScaleY);
-						bg.uv[1] = new Vector2(bg.uv[0].x, bg.uv[0].y + (float)bg.height * texScaleY);
-						bg.uv[2] = new Vector2(bg.uv[0].x + (float)bg.width * texScaleX, bg.uv[1].y);
-						bg.uv[3] = new Vector2(bg.uv[2].x, bg.uv[0].y);
-					}
-
-					bg.lineHeight = lineHeight;
-				}
-				else
+				if (!ttf)
 				{
 					PackageItem charImg;
 					if (_itemsById.TryGetValue(img, out charImg))
@@ -1305,10 +1283,31 @@ namespace FairyGUI
 						if (mainTexture == null)
 							mainTexture = charImg.texture.root;
 					}
+				}
+				else
+				{
+					if (mainSprite.rotated)
+					{
+						bg.uv[0] = new Vector2((float)(by + bg.height + mainSprite.rect.x) * texScaleX,
+							1 - (float)(mainSprite.rect.yMax - bx) * texScaleY);
+						bg.uv[1] = new Vector2(bg.uv[0].x - (float)bg.height * texScaleX, bg.uv[0].y);
+						bg.uv[2] = new Vector2(bg.uv[1].x, bg.uv[0].y + (float)bg.width * texScaleY);
+						bg.uv[3] = new Vector2(bg.uv[0].x, bg.uv[2].y);
+					}
+					else
+					{
+						bg.uv[0] = new Vector2((float)(bx + mainSprite.rect.x) * texScaleX,
+							1 - (float)(by + bg.height + mainSprite.rect.y) * texScaleY);
+						bg.uv[1] = new Vector2(bg.uv[0].x, bg.uv[0].y + (float)bg.height * texScaleY);
+						bg.uv[2] = new Vector2(bg.uv[0].x + (float)bg.width * texScaleX, bg.uv[1].y);
+						bg.uv[3] = new Vector2(bg.uv[2].x, bg.uv[0].y);
+					}
+				}
 
-					if (fontSize == 0)
-						fontSize = bg.height;
-
+				if (ttf)
+					bg.lineHeight = lineHeight;
+				else
+				{
 					if (bg.advance == 0)
 					{
 						if (xadvance == 0)
@@ -1325,7 +1324,6 @@ namespace FairyGUI
 				buffer.position = nextPos;
 			}
 
-			font.size = fontSize;
 			font.mainTexture = mainTexture;
 			if (!font.hasChannel)
 				font.shader = ShaderConfig.imageShader;

@@ -1,0 +1,33 @@
+ManifestFileVersion: 0
+CRC: 46506897
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: e76fc2ffbef7d65ea5e6b51cb3c65a6b
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 1b3feb9bc6055cd677abb4cd6f720d90
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+- Class: 687078895
+  Script: {instanceID: 0}
+Assets:
+- Assets/Asset/UI/Prefabs/Common/Atlas1.spriteatlas
+Dependencies:
+- D:/UnityDomo/TestProject1/Assets/StreamingAssets/AssetBundles/64e4c4efbece95f49f67b627f79a50236b07e212.ab
+- D:/UnityDomo/TestProject1/Assets/StreamingAssets/AssetBundles/515f437ee7102945c4c24d2a745ec79859179ed3.ab
+- D:/UnityDomo/TestProject1/Assets/StreamingAssets/AssetBundles/b2897d2f0ed3e1f2f9f0da6c16fbb8b0826bb85f.ab
+- D:/UnityDomo/TestProject1/Assets/StreamingAssets/AssetBundles/99406b4278f696c258f9ab241cf252aa56b5bda1.ab
+- D:/UnityDomo/TestProject1/Assets/StreamingAssets/AssetBundles/85c077a835f332c7b8947a07d5d29caac0f9fe1a.ab
+- D:/UnityDomo/TestProject1/Assets/StreamingAssets/AssetBundles/62481b88e827cdd224b7488241ec264c89d40095.ab
+- D:/UnityDomo/TestProject1/Assets/StreamingAssets/AssetBundles/bf8bf4719869656df8f0e9d1c2d3786be6a46209.ab
+- D:/UnityDomo/TestProject1/Assets/StreamingAssets/AssetBundles/53eff60b4dca6e6997a10d75fb5b4b6b87202470.ab
+- D:/UnityDomo/TestProject1/Assets/StreamingAssets/AssetBundles/e578d9a7dbf1a03043e07a2562f1e7f9a0f4d459.ab
+- D:/UnityDomo/TestProject1/Assets/StreamingAssets/AssetBundles/d765357e371fc9884a085f2b4f866ca0568f31ae.ab
+- D:/UnityDomo/TestProject1/Assets/StreamingAssets/AssetBundles/b1d789ca12422619cc895294fb375dbc2c0a9a25.ab
+- D:/UnityDomo/TestProject1/Assets/StreamingAssets/AssetBundles/fa5eea8e788118236eb3d089ed93ab48f09b7eaf.ab
+- D:/UnityDomo/TestProject1/Assets/StreamingAssets/AssetBundles/0e95d306816a4308b28636003e49b56dbeced88e.ab

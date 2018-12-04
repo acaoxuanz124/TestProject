@@ -18,7 +18,7 @@ public static class Manager
         AddManager<AssetManager>();
         AddManager<GameSceneManager>();
         AddManager<AssetBundleManager>(true);
-        AddManager<LuaManager>();
+        AddManager<LuaManager>(true);
 
         var tor = _dicManager.Values.GetEnumerator();
         while (tor.MoveNext())
@@ -49,10 +49,20 @@ public static class Manager
         string managerName = typeof(T).Name;
         if (!_dicManager.TryGetValue(managerName, out manager))
         {
-            Debuger.LogError("current in this thing managerName {0} is null",managerName);
+            Debuger.LogError("current in this thing managerName {0} is null", managerName);
             return null;
         }
         return manager as T;
+    }
+    public static BaseManager GetManager(string managerName)
+    {
+        BaseManager manager = null;
+        if (!_dicManager.TryGetValue(managerName, out manager))
+        {
+            Debuger.LogError("current in this thing managerName {0} is null", managerName);
+            return manager;
+        }
+        return manager;
     }
     public static void AddManager<T>(bool isWaitInit = false)
     where T : BaseManager, new()
@@ -67,7 +77,7 @@ public static class Manager
             {
                 _ListInit.Add(managerName);
             }
-            else if(IsInitDone)
+            else if (IsInitDone)
             {
                 manager.Init();
             }

@@ -1,9 +1,21 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
-//[Serializable]
+public class AssetFileInfo
+{
+    public string filePath;
+    public string md5;
+    public AssetFileInfo(string filePath,string md5)
+    {
+        this.filePath = filePath;
+        new FileInfo(filePath);
+        this.md5 = md5;
+    }
+}
+
 public class AssetInfo
 {
     public string showVersion;

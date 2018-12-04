@@ -1,0 +1,16 @@
+ManifestFileVersion: 0
+CRC: 3265613601
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 71acf33c8e2c7d18c94119f787635db3
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: db876066d9c58e1004fa9887524636f6
+HashAppended: 0
+ClassTypes:
+- Class: 213
+  Script: {instanceID: 0}
+Assets:
+- Assets/UIImg/UITest/Img/14.png
+Dependencies: []

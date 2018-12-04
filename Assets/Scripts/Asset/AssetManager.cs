@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using FairyGUI;
 public enum AssetReadType : byte
 {
     Editor = 1,
@@ -33,7 +34,7 @@ public class AssetManager : BaseManager
         _listIngAssetLoader = new List<AssetLoader>();
 
     }
-    public AssetLoader GetLoader(string AssetsPath)
+    private AssetLoader GetLoader(string AssetsPath)
     {
         AssetLoader assetLoader = null;
         if (_dicAssetLoader.TryGetValue(AssetsPath, out assetLoader))
@@ -45,6 +46,7 @@ public class AssetManager : BaseManager
     }
     private AssetLoader CreateLoader()
     {
+        new GameObject().GetComponent("");
         AssetLoader assetLoader = null;
 #if UNITY_EDITOR
         if (ReadType == AssetReadType.AssetBundle)
@@ -61,9 +63,9 @@ public class AssetManager : BaseManager
 #endif
 
     }
-    public void LoadAsset(string AssetPath, UnityAction<AssetLoader> doneAction, UnityAction<float> progressAction = null)
+    public void LoadAssetAsync(string AssetPath, UnityAction<AssetLoader> doneAction, UnityAction<float> progressAction = null)
     {
-        string AssetsPath = GameConfig.AssetPath + AssetPath;
+        string AssetsPath = GameConfig.Asset.AssetPath + AssetPath;
         AssetLoader assetLoader = GetLoader(AssetsPath);
         if (assetLoader != null)
         {
@@ -83,9 +85,38 @@ public class AssetManager : BaseManager
         }
         assetLoader = CreateLoader();
         assetLoader.SetLoader(AssetsPath, LoadDone + doneAction, progressAction);
-        assetLoader.Load();
+        assetLoader.LoadAsync();
         _listIngAssetLoader.Add(assetLoader);
     }
+    public AssetLoader LoadAsset(string AssetPath)
+    {
+        string AssetsPath = GameConfig.Asset.AssetPath + AssetPath;
+        AssetLoader assetLoader = GetLoader(AssetsPath);
+        if (assetLoader != null)
+        {
+            if (assetLoader.isDone)
+                return assetLoader;
+            this.Log("The AssetPath {0} is loading");
+            return null;
+        }
+        assetLoader = CreateLoader();
+        assetLoader.SetLoader(AssetsPath,LoadDone);
+        assetLoader.Load();
+        return assetLoader;
+    }
+    public void LoadUIPackage(string packageName)
+    {
+        string assetsPath = GameConfig.Asset.AssetUIPackagePath + packageName + "/" + packageName;
+        UIPackage.AddPackage(assetsPath, (string name, string extension, System.Type type, out DestroyMethod destroyMethod) =>
+        {
+
+            destroyMethod = DestroyMethod.None;
+
+            return null;
+        });
+
+    }
+    
     private void LoadDone(AssetLoader assetLoader)
     {
         _listIngAssetLoader.Remove(assetLoader);

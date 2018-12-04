@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 2138336496
+CRC: 3767003455
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 40ce1ebc3cecc374d61c422a48ad388e
+    Hash: 42b8b6a52ee583748e745e09aed09bcd
   TypeTreeHash:
     serializedVersion: 2
     Hash: 31d6cfe0d16ae931b73c59d7e0c089c0
@@ -11,5 +11,4 @@ HashAppended: 0
 ClassTypes: []
 Assets:
 - Assets/Asset/Scenes/testScene2.unity
-Dependencies:
-- D:/UnityDomo/TestProject1/Assets/StreamingAssets/AssetBundles/f6aa0a66f630ffa58661c08bbfccb2ac4906b766.ab
+Dependencies: []

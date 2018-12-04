@@ -28,7 +28,6 @@ public abstract class AssetLoader : ITobj, IObject
         get;
         protected set;
     }
-
     public UnityEngine.Object mainAsset
     {
         get;
@@ -63,6 +62,7 @@ public abstract class AssetLoader : ITobj, IObject
     }
 
 
+    public abstract void LoadAsync();
     public abstract void Load();
 
     public virtual void Return()
@@ -70,7 +70,6 @@ public abstract class AssetLoader : ITobj, IObject
         this.AssetsPath = null;
         this.doneEvent.RemoveAllListeners();
         this.progressEvent.RemoveAllListeners();
-        this.mainAsset = null;
         this._isDone = false;
     }
     protected void SetProgress(float progress)
@@ -79,7 +78,7 @@ public abstract class AssetLoader : ITobj, IObject
     }
     public virtual void Release()
     {
-
+        
     }
 
 }

@@ -222,10 +222,11 @@ public static class Tool
         string text = "";
         if (encoding == null)
             encoding = Encoding.UTF8;
-        
         if (IsFileExists(path))
+        {
             text = File.ReadAllText(path, encoding);
-        text = text.Trim();
+            text = text.Trim();
+        }
         return text;
     }
     public static void SaveTxt(string text, string path, Encoding encoding)
@@ -239,7 +240,7 @@ public static class Tool
             path = AppReadPath + localReadPath;
         return path;
     }
-    public static long InputNum(string text)
+    public static long StringToInt64(string text)
     {
         long num = 0;
         text = Regex.Replace(text, "[^0-9]", "");
@@ -248,4 +249,52 @@ public static class Tool
         num = Convert.ToInt64(text);
         return num;
     }
+
+    public static T GetAddComponent<T>(GameObject gobj)
+    where T : Component
+    {
+        T tValue = gobj.GetComponent<T>();
+        if (!tValue)
+            tValue = gobj.AddComponent<T>();
+        return tValue;
+    }
+    public static Component GetAddComponent(GameObject gobj, System.Type componentType)
+    {
+        Component tValue = gobj.GetComponent(componentType);
+        if (!tValue)
+            tValue = gobj.AddComponent(componentType);
+        return tValue;
+    }
+    public static T GetComponent<T>(GameObject gobj, string strFind)
+        where T : Component
+    {
+        T tValue = null;
+        Transform findTran = gobj.transform.Find(strFind);
+        if (typeof(T).Name == "Transform")
+        {
+            tValue = findTran as T;
+        }
+        else
+        {
+            tValue = gobj.GetComponent<T>();
+        }
+        return tValue;
+    }
+    public static Component GetComponent(GameObject gobj, string strFind, System.Type componentType)
+    {
+        Component tValue = null;
+
+        Transform findTran = gobj.transform.Find(strFind);
+
+        if (componentType.Name == "Transform")
+        {
+            tValue = findTran;
+        }
+        else
+        {
+            tValue = gobj.GetComponent(componentType);
+        }
+        return tValue;
+    }
+
 }

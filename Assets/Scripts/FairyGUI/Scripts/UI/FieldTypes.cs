@@ -169,8 +169,6 @@
 		Shake,
 		ColorFilter,
 		Skew,
-		Text,
-		Icon,
 		Unknown
 	}
 

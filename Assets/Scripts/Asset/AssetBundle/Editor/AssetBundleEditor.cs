@@ -83,7 +83,7 @@ public class AssetBundleEditor : EditorWindow
     public static void BuildAssetBundles()
     {
         Dictionary<string, string> dicFileHashPath = new Dictionary<string, string>();
-        List<string> listFileFullPath = Tool.GetDirectoryFiles(GameConfig.AssetFullPath, new string[] { ".meta", ".asset" }, false, true);
+        List<string> listFileFullPath = Tool.GetDirectoryFiles(GameConfig.Asset.AssetFullPath, new string[] { ".meta", ".asset" }, false, true);
         List<AssetBundleBuild> listAssetBundleBuild = new List<AssetBundleBuild>();
         for (int i = 0; i < listFileFullPath.Count; i++)
         {
@@ -109,11 +109,11 @@ public class AssetBundleEditor : EditorWindow
             }
         }
         Tool.CreateDirectory(Application.streamingAssetsPath);
-        Tool.CreateDirectory(GameConfig.AssetBundleLoadPath);
-        BuildPipeline.BuildAssetBundles(GameConfig.AssetBundleLoadPath, listAssetBundleBuild.ToArray(), BuildAssetBundleOptions.ChunkBasedCompression, BuildTarget.Android);
+        Tool.CreateDirectory(GameConfig.Asset.AssetBundleLoadPath);
+        BuildPipeline.BuildAssetBundles(GameConfig.Asset.AssetBundleLoadPath, listAssetBundleBuild.ToArray(), BuildAssetBundleOptions.ChunkBasedCompression, BuildTarget.Android);
         AssetDatabase.Refresh();
 
-        AssetBundle rootAssetBundle = AssetBundle.LoadFromFile(GameConfig.AssetBundleLoadPath + GameConfig.assetBundleDirName);
+        AssetBundle rootAssetBundle = AssetBundle.LoadFromFile(GameConfig.Asset.AssetBundleLoadPath + GameConfig.Asset.assetBundleDirName);
         AssetBundleManifest abManifest = rootAssetBundle.LoadAsset<AssetBundleManifest>("AssetBundleManifest");
 
         StringBuilder sb = new StringBuilder();
@@ -137,11 +137,11 @@ public class AssetBundleEditor : EditorWindow
             }
         }
         rootAssetBundle.Unload(true);
-        Tool.SaveTxt(sb.ToString(), GameConfig.AssetBundleLoadPath + GameConfig.depenFileName, Encoding.UTF8);
+        Tool.SaveTxt(sb.ToString(), GameConfig.Asset.AssetBundleLoadPath + GameConfig.Asset.depenFileName, Encoding.UTF8);
 
         List<string> listDeleteFilePath = new List<string>();
-        listDeleteFilePath.Add(GameConfig.AssetBundleLoadPath + GameConfig.assetBundleDirName);
-        listDeleteFilePath.Add(GameConfig.AssetBundleLoadPath + GameConfig.assetBundleDirName + ".manifest");
+        listDeleteFilePath.Add(GameConfig.Asset.AssetBundleLoadPath + GameConfig.Asset.assetBundleDirName);
+        listDeleteFilePath.Add(GameConfig.Asset.AssetBundleLoadPath + GameConfig.Asset.assetBundleDirName + ".manifest");
         for (int i = listDeleteFilePath.Count - 1; i >= 0; i--)
         {
             string deleteFilePath = listDeleteFilePath[i];

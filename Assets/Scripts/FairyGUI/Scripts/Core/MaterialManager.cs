@@ -41,26 +41,25 @@ namespace FairyGUI
 		/// <summary>
 		/// 
 		/// </summary>
-		/// <param name="graphics"></param>
+		/// <param name="grahpics"></param>
 		/// <param name="context"></param>
-		/// <param name="firstInstance"></param>
 		/// <returns></returns>
-		public NMaterial GetMaterial(NGraphics graphics, UpdateContext context, out bool firstInstance)
+		public NMaterial GetMaterial(NGraphics grahpics, UpdateContext context)
 		{
 			uint frameId = UpdateContext.frameId;
-			BlendMode blendMode = graphics.blendMode;
+			BlendMode blendMode = grahpics.blendMode;
 			int collectionIndex;
 			uint clipId;
 
-			if (context.clipped && !graphics.dontClip)
+			if (context.clipped && !grahpics.dontClip)
 			{
 				clipId = context.clipInfo.clipId;
 
-				if (graphics.maskFrameId == UpdateContext.frameId)
+				if (grahpics.maskFrameId == UpdateContext.frameId)
 					collectionIndex = 6;
 				else if (context.rectMaskDepth == 0)
 				{
-					if (graphics.grayed)
+					if (grahpics.grayed)
 						collectionIndex = 1;
 					else
 						collectionIndex = 0;
@@ -69,14 +68,14 @@ namespace FairyGUI
 				{
 					if (context.clipInfo.soft)
 					{
-						if (graphics.grayed)
+						if (grahpics.grayed)
 							collectionIndex = 5;
 						else
 							collectionIndex = 4;
 					}
 					else
 					{
-						if (graphics.grayed)
+						if (grahpics.grayed)
 							collectionIndex = 3;
 						else
 							collectionIndex = 2;
@@ -86,7 +85,7 @@ namespace FairyGUI
 			else
 			{
 				clipId = 0;
-				if (graphics.grayed)
+				if (grahpics.grayed)
 					collectionIndex = 1;
 				else
 					collectionIndex = 0;
@@ -98,19 +97,15 @@ namespace FairyGUI
 			{
 				items = _materials[collectionIndex];
 				if (items == null)
-				{
 					items = new List<NMaterial>();
-					_materials[collectionIndex] = items;
-				}
+				_materials[collectionIndex] = items;
 			}
 			else
 			{
 				items = _materials[internalKeywordCount + collectionIndex];
 				if (items == null)
-				{
 					items = new List<NMaterial>();
-					_materials[internalKeywordCount + collectionIndex] = items;
-				}
+				_materials[internalKeywordCount + collectionIndex] = items;
 			}
 
 			int cnt = items.Count;
@@ -121,16 +116,10 @@ namespace FairyGUI
 				if (mat.frameId == frameId)
 				{
 					if (collectionIndex != 6 && mat.clipId == clipId && mat.blendMode == blendMode)
-					{
-						firstInstance = false;
 						return mat;
-					}
 				}
-				else
-				{
+				else if (result == null)
 					result = mat;
-					break;
-				}
 			}
 
 			if (result != null)
@@ -140,7 +129,7 @@ namespace FairyGUI
 				result.blendMode = blendMode;
 
 				if (result.combined)
-					result.material.SetTexture(ShaderConfig._properyIDs._AlphaTex, _texture.alphaTexture);
+					result.material.SetTexture("_AlphaTex", _texture.alphaTexture);
 			}
 			else
 			{
@@ -160,7 +149,6 @@ namespace FairyGUI
 				items.Add(result);
 			}
 
-			firstInstance = true;
 			return result;
 		}
 
@@ -176,7 +164,7 @@ namespace FairyGUI
 			{
 				nm.combined = true;
 				nm.material.EnableKeyword("COMBINED");
-				nm.material.SetTexture(ShaderConfig._properyIDs._AlphaTex, _texture.alphaTexture);
+				nm.material.SetTexture("_AlphaTex", _texture.alphaTexture);
 			}
 			if (_keywords != null)
 			{
@@ -238,7 +226,7 @@ namespace FairyGUI
 								nm.combined = true;
 								nm.material.EnableKeyword("COMBINED");
 							}
-							nm.material.SetTexture(ShaderConfig._properyIDs._AlphaTex, _texture.alphaTexture);
+							nm.material.SetTexture("_AlphaTex", _texture.alphaTexture);
 						}
 					}
 				}

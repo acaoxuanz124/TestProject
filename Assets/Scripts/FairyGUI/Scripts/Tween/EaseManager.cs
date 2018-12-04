@@ -52,9 +52,6 @@ namespace FairyGUI
 		/// </summary>
 		internal static float Evaluate(EaseType easeType, float time, float duration, float overshootOrAmplitude, float period)
 		{
-			if (duration <= 0)
-				return 1;
-
 			switch (easeType)
 			{
 				case EaseType.Linear:

@@ -1,0 +1,40 @@
+ManifestFileVersion: 0
+CRC: 684934408
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: a20e96bd105586182524773e73aef463
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 1b904ddcc1db0e758337c6f90b59e763
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+- Class: 114
+  Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 128
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+- Class: 222
+  Script: {instanceID: 0}
+- Class: 224
+  Script: {instanceID: 0}
+Assets:
+- Assets/Asset/UI/Prefabs/UITest/Test.prefab
+Dependencies:
+- D:/UnityDomo/TestProject1/Assets/StreamingAssets/AssetBundles/515f437ee7102945c4c24d2a745ec79859179ed3.ab
+- D:/UnityDomo/TestProject1/Assets/StreamingAssets/AssetBundles/d765357e371fc9884a085f2b4f866ca0568f31ae.ab
+- D:/UnityDomo/TestProject1/Assets/StreamingAssets/AssetBundles/14391ca415af4a28c6db91b6a122e73de92a9e59.ab
+- D:/UnityDomo/TestProject1/Assets/StreamingAssets/AssetBundles/e51490e82d2e9d3a3aabe4be73cbda7beb93b35f.ab

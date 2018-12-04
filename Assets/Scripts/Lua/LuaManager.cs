@@ -5,14 +5,34 @@ using UnityEngine;
 
 public class LuaManager : BaseManager
 {
-    LuaState mainLuaState;
     public override void Init()
     {
-
         base.Init();
-        Game.instance.gameObject.AddComponent<LuaClient>(); 
-        mainLuaState = LuaClient.GetMainState();
-        mainLuaState.DoFile("Game");
-        mainLuaState.Call("Game.Start", false);
+        this.Coroutine(_Init());
+
     }
+    private IEnumerator _Init()
+    {
+        Game.instance.gameObject.AddComponent<LuaClient>();
+        yield return 0;
+        isInit = true;
+    }
+    public void DoFile(string name)
+    {
+        LuaState luaState = LuaClient.GetMainState();
+        luaState.DoFile(name);
+    }
+    public void Call(string name)
+    {
+        LuaState luaState = LuaClient.GetMainState();
+        LuaFunction luaFunc = luaState.GetFunction(name);
+        luaFunc.Call();
+        luaFunc.Dispose();
+    }
+    public void LuaGC()
+    {
+        LuaState luaState = LuaClient.GetMainState();
+        luaState.LuaGC(LuaGCOptions.LUA_GCCOLLECT, 0);
+    }
+
 }
